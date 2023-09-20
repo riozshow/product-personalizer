@@ -2,12 +2,11 @@ import styles from "./Product.module.scss";
 import PropTypes from "prop-types";
 import ProductImage from "../ProductImage/ProductImage";
 import ProductForm from "../ProductForm/ProductForm";
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 
 const Product = ({ name, title, basePrice, colors, sizes }) => {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[0]);
-  const [totalPrice, setTotalPrice] = useState(basePrice);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -21,10 +20,8 @@ const Product = ({ name, title, basePrice, colors, sizes }) => {
     `);
   };
 
-  useEffect(() => {
-    if (selectedSize) {
-      setTotalPrice(basePrice + selectedSize.additionalPrice);
-    }
+  const totalPrice = useMemo(() => {
+    return basePrice + selectedSize.additionalPrice;
   }, [selectedSize]);
 
   return (
